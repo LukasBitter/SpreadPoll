@@ -18,7 +18,15 @@ def display_poll(poll_slug):
     except gspread.exceptions.WorksheetNotFound:
         return "Sorry, no poll at that url", 404
 
-    options = poll.row_values(1)
+    options = [o for o in poll.row_values(1) if o]
+    '''
+    Equivalent to
+    tmp = []
+    for o in options:
+        if o:
+            tmp.append(o)
+    options = tmp
+    '''
     title = options.pop(0)
 
     return render_template('poll.html', **locals())
